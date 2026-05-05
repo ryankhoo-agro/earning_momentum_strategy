@@ -72,8 +72,7 @@ These are deferred, not forbidden forever. They go in a `v2_ideas.md` file, not 
 - **Streamlit** for the dashboard
 - **pandas, numpy, scipy** for data work
 - **pyarrow** for parquet caching
-- **yfinance** for OHLC (known unreliable for earnings dates — do not use yfinance for earnings calendar)
-- **Finnhub free tier** for earnings calendar with BMO/AMC flag (rate limit: 60 calls/min)
+- **yfinance** for OHLC and earnings calendar (`Ticker.get_earnings_dates()`)
 - **fja05680/sp500** GitHub data for point-in-time S&P 500 membership
 
 ### No WRDS access
@@ -94,7 +93,7 @@ Runs locally for now, with potential migration to Streamlit Community Cloud. The
 
 The data layer is the longest pole in the tent. Get it right.
 
-1. **Every API call hits local cache first.** Re-running the dashboard does not re-hit Finnhub.
+1. **Every API call hits local cache first.** Re-running the dashboard does not re-hit yfinance.
 2. **Cached files are parquet, not CSV.** Stored under `data/raw/` (raw API responses) and `data/processed/` (cleaned).
 3. **No silent data drops.** If a row is filtered, log it. If a ticker is missing, log it. The owner must be able to audit every drop.
 4. **Sanity checks run on ingestion.** See `src/diagnostics.py`. Failing sanity checks block downstream work.
@@ -102,7 +101,7 @@ The data layer is the longest pole in the tent. Get it right.
 
 ### Known Data Limitations (do not pretend these don't exist)
 - yfinance has no delisted-stock prices → survivorship bias partially mitigated, not eliminated
-- yfinance earnings dates are actively unreliable → use Finnhub
+- yfinance earnings dates used for lack of a better free alternative; treat dates as approximate
 - fja05680 membership is approximate, not CRSP-grade
 - Friday AMC releases get weekend digestion → flag, do not exclude
 - Intraday earnings releases are rare → exclude or flag separately, never silently include
