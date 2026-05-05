@@ -1,6 +1,5 @@
 .env
-data/raw/
-data/processed/
+data/raw/earnings/
 __pycache__/
 *.pyc
 *.pyo
