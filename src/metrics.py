@@ -96,7 +96,7 @@ def compute_drift_paths(
 
 
 def sharpe_ratio(returns: pd.Series, periods_per_year: int = 252) -> float:
-    """Annualised Sharpe. Uses realised returns, not excess — no risk-free rate
+    """Annualised Sharpe. Uses realised returns, not ex cess — no risk-free rate
     subtracted in v1 (document this in the dashboard). Includes 0-return days
     (days with no active positions), which is conservative but honest."""
     if len(returns) < 2 or returns.std() == 0:

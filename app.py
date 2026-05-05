@@ -386,6 +386,14 @@ with tab_equity:
             if (trade_log["net_return"] <= 0).any() else "Avg loser: —"
         )
 
+    # ── Trade log download ────────────────────────────────────────────────────
+    st.download_button(
+        label="Download trade log (CSV)",
+        data=trade_log.to_csv(index=False).encode("utf-8"),
+        file_name=f"trade_log_hold{holding_period}d_{entry_mode.lower()}.csv",
+        mime="text/csv",
+    )
+
     # ── Methodology note ──────────────────────────────────────────────────────
     with st.expander("Methodology & limitations"):
         st.markdown(f"""
